@@ -5,11 +5,14 @@
 - `Alibaba_Classical.list`
 - `Anthropic.list`
 - `Apple_Classical.list`
+- `Baidu.list`
 - `BiliBili.list`
+- `ByteDance.list`
 - `China_Classical.list`
 - `Claude.list`
 - `Copilot.list`
 - `Direct.list`
+- `DouYin.list`
 - `Download.list`
 - `Game.list`
 - `Gemini.list`
@@ -29,9 +32,10 @@
 - `Twitter.list`
 - `XiaoHongShu.list`
 - `YouTube.list`
+- `clash-rule-provider.list`
 - `crypt.list`
 - `decotv.list`
 - `direct.list`
 - `proxy.list`
 
-_Last update: 2025-12-09 22:28:29 UTC_
+_Last update: 2025-12-09 22:36:28 UTC_
