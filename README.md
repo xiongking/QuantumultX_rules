@@ -33,9 +33,10 @@
 - `XiaoHongShu.list`
 - `YouTube.list`
 - `ai.list`
+- `clash-rule-provider.list`
 - `crypt.list`
 - `decotv.list`
 - `direct.list`
 - `proxy.list`
 
-_Last update: 2025-12-09 22:39:26 UTC_
+_Last update: 2025-12-09 22:41:29 UTC_
