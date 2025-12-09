@@ -13,7 +13,7 @@ def safe_filename(name):
     return f"{name}.list"
 
 def extract_rules_from_lines(lines):
-    """从文本行提取 QX 支持的规则，兼容非严格 YAML"""
+    """从文本行提取 QX 支持的规则，兼容严格 YAML、非 YAML、纯 CIDR 列表"""
     rules = []
 
     for line in lines:
@@ -21,22 +21,33 @@ def extract_rules_from_lines(lines):
         if not line or line.startswith("#"):
             continue
 
-        # 去掉前面的 '- ' 符号
+        # 去掉 leading "- "
         if line.startswith("- "):
             line = line[2:].strip()
+        elif line.startswith("-"):
+            line = line[1:].strip()
+
+        # 去掉引号
+        line = line.strip("'").strip('"')
 
         parts = [p.strip() for p in line.split(",")]
 
+        # 规则类型 + 值
         if len(parts) >= 2:
             typ, target = parts[0], parts[1]
             if typ in VALID_TYPES:
                 rules.append(f"{typ},{target}")
-        elif len(parts) == 1:
+            continue
+
+        # 只有一个值 -> 可能是纯 CIDR
+        if len(parts) == 1:
+            item = parts[0]
             try:
-                ipaddress.ip_network(parts[0])
-                rules.append(f"IP-CIDR,{parts[0]}")
-            except ValueError:
+                ipaddress.ip_network(item)
+                rules.append(f"IP-CIDR,{item}")
                 continue
+            except:
+                pass
 
     return sorted(set(rules))
 
