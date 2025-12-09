@@ -32,10 +32,10 @@
 - `Twitter.list`
 - `XiaoHongShu.list`
 - `YouTube.list`
-- `clash-rule-provider.list`
+- `ai.list`
 - `crypt.list`
 - `decotv.list`
 - `direct.list`
 - `proxy.list`
 
-_Last update: 2025-12-09 22:36:28 UTC_
+_Last update: 2025-12-09 22:39:26 UTC_
