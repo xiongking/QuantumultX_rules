@@ -6,7 +6,7 @@ from datetime import datetime
 
 RULES_FILE = "rules.txt"
 
-# QuantumultX 支持的规则类型
+# QX 支持的规则类型
 VALID_TYPES = ["DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-KEYWORD", "IP-CIDR", "IP-CIDR6", "URL-REGEX"]
 
 def safe_filename(name):
@@ -18,36 +18,42 @@ def fetch_yaml(url):
     try:
         r = requests.get(url, timeout=15)
         r.raise_for_status()
-        data = yaml.safe_load(r.text)
-        return data
-    except Exception as e:
+        return yaml.safe_load(r.text)
+    except requests.exceptions.HTTPError as e:
         print(f"[Error] Failed to fetch {url}: {e}")
+        return None
+    except Exception as e:
+        print(f"[Error] Unknown error fetching {url}: {e}")
         return None
 
 def extract_rules(data):
-    """提取 rules 列表"""
+    """提取 QX 支持的规则"""
     rules = []
-    if not data:
-        return rules
 
-    # 支持 payload 或 rules
     raw_rules = data.get("payload") or data.get("rules") or []
+
     for item in raw_rules:
-        if isinstance(item, str) and ":" in item:
-            typ, val = item.split(":", 1)
-            typ, val = typ.strip(), val.strip()
+        if not isinstance(item, str):
+            continue
+
+        # Clash 格式: TYPE,TARGET,[策略]
+        parts = [p.strip() for p in item.split(",")]
+        if len(parts) >= 2:
+            typ, target = parts[0], parts[1]
             if typ in VALID_TYPES:
-                rules.append(val)
-    # 去重
+                rules.append(f"{typ},{target}")
+
+    # 去重并排序
     return sorted(set(rules))
 
 def process_url(url):
     print(f"[Download] {url}")
     data = fetch_yaml(url)
     if not data:
+        print(f"[Skip] Could not fetch {url}")
         return None
 
-    # 使用 YAML name 字段或 URL 文件名
+    # 文件名优先使用 YAML 中 name 字段
     name = data.get("name")
     if not name:
         name = url.strip().split("/")[-1].replace(".yaml","").replace(".yml","")
