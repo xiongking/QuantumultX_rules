@@ -1,31 +1,31 @@
-name: Build QuantumultX Lists
+name: Convert Clash Rules to QX List
 
 on:
-  push:
-    branches: ["main"]
-  schedule:
-    - cron: "0 */12 * * *"
   workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"   # 每12小时自动运行一次，可按需修改
 
 jobs:
-  build:
+  convert:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.x"
 
-      - run: pip install pyyaml requests
+      - name: Install Dependencies
+        run: pip install requests pyyaml
 
-      - name: Run converter
+      - name: Run Converter
         run: python scripts/convert.py
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Commit Updated Lists
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          commit_message: "Auto update QX list files"
+          file_pattern: "*.list"
