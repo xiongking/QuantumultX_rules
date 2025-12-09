@@ -1,4 +1,12 @@
-name: Convert Clash Rules to QX List
+name: Convert Clash rules to QX list
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+
 
 on:
   workflow_dispatch:
