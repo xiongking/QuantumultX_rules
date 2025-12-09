@@ -1,67 +1,66 @@
-import yaml
 import requests
+import yaml
 import os
 import re
 
-def extract_name(url):
-    return re.sub(r'\.ya?ml$', '', url.split('/')[-1])
+RULE_FILE = "rules.txt"
 
-def extract_rules(data):
-    result = []
+def safe_filename(url: str):
+    """Extract filename from URL like xxx.yaml → xxx.list"""
+    name = url.strip().split("/")[-1]
+    name = re.sub(r"\.ya?ml$", "", name)
+    return f"{name}.list"
 
-    if isinstance(data, dict):
-        if "payload" in data:
-            result += data["payload"]
-        if "rules" in data:
-            result += data["rules"]
+def clash_to_qx(rules):
+    qx = []
+    for rule in rules:
+        if ":" not in rule:
+            continue
+        typ, val = rule.split(":", 1)
+        typ = typ.strip()
+        val = val.strip()
 
-        for v in data.values():
-            if isinstance(v, dict):
-                result += extract_rules(v)
-            elif isinstance(v, list):
-                for i in v:
-                    if isinstance(i, dict):
-                        result += extract_rules(i)
-    return result
+        if typ in [
+            "DOMAIN",
+            "DOMAIN-SUFFIX",
+            "DOMAIN-KEYWORD",
+            "IP-CIDR",
+            "IP-CIDR6",
+            "URL-REGEX",
+        ]:
+            qx.append(val)
+    return qx
 
-def convert_line(line):
-    line = line.strip()
-    if not line:
-        return None
-    if "," in line:
-        return line
-    return None
 
-def process_url(url):
-    print(f"Processing: {url}")
-    name = extract_name(url)
-    output = f"dist/{name}.list"
+def process_one(url):
+    print(f"Downloading {url}")
+    content = requests.get(url).text
 
-    try:
-        raw = requests.get(url, timeout=20).text
-        data = yaml.safe_load(raw)
-        rules = extract_rules(data)
+    data = yaml.safe_load(content)
+    rules = data.get("payload") or data.get("rules") or []
 
-        cleaned = []
-        for r in rules:
-            qx = convert_line(r)
-            if qx:
-                cleaned.append(qx)
+    qx_list = clash_to_qx(rules)
 
-        os.makedirs("dist", exist_ok=True)
-        with open(output, "w", encoding="utf-8") as f:
-            f.write("\n".join(cleaned))
+    filename = safe_filename(url)
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write("\n".join(qx_list))
 
-        print(f"Saved {output} ({len(cleaned)} rules)")
-    except Exception as e:
-        print("Error:", e)
+    print(f"Written → {filename}")
+
 
 def main():
-    with open("rules.txt", "r") as f:
-        urls = [l.strip() for l in f if l.strip()]
+    if not os.path.exists(RULE_FILE):
+        print(f"rules.txt not found.")
+        return
+
+    with open(RULE_FILE, "r", encoding="utf-8") as f:
+        urls = [line.strip() for line in f if line.strip()]
 
     for url in urls:
-        process_url(url)
+        try:
+            process_one(url)
+        except Exception as e:
+            print(f"Error processing {url}: {e}")
 
 if __name__ == "__main__":
     main()
