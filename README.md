@@ -1,0 +1,37 @@
+# QuantumultX Rule Lists
+
+自动生成的 QuantumultX 规则列表：
+
+- `Alibaba_Classical.list`
+- `Anthropic.list`
+- `Apple_Classical.list`
+- `BiliBili.list`
+- `China_Classical.list`
+- `Claude.list`
+- `Copilot.list`
+- `Direct.list`
+- `Download.list`
+- `Game.list`
+- `Gemini.list`
+- `GitHub.list`
+- `GitHub.list`
+- `GlobalMedia_Classical.list`
+- `Google.list`
+- `Lan.list`
+- `Microsoft.list`
+- `OpenAI.list`
+- `ProxyLite.list`
+- `Reddit.list`
+- `Spotify.list`
+- `Telegram.list`
+- `Tencent.list`
+- `TikTok.list`
+- `Twitter.list`
+- `XiaoHongShu.list`
+- `YouTube.list`
+- `crypt.list`
+- `decotv.list`
+- `direct.list`
+- `proxy.list`
+
+_Last update: 2025-12-09 22:28:29 UTC_
