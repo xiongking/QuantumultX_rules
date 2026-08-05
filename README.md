@@ -39,4 +39,4 @@
 - `direct.list`
 - `proxy.list`
 
-_Last update: 2026-08-04 02:00:57 UTC_
+_Last update: 2026-08-05 02:00:04 UTC_
