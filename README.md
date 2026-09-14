@@ -30,6 +30,7 @@
 - `Tencent.list`
 - `TikTok.list`
 - `Twitter.list`
+- `XiaoHongShu.list`
 - `YouTube.list`
 - `ai.list`
 - `clash-rule-provider.list`
@@ -38,4 +39,4 @@
 - `direct.list`
 - `proxy.list`
 
-_Last update: 2026-09-13 02:44:24 UTC_
+_Last update: 2026-09-14 02:59:18 UTC_
