@@ -13,6 +13,7 @@ DOMAIN-SUFFIX,deepseek.com
 DOMAIN-SUFFIX,download.pytorch.org
 DOMAIN-SUFFIX,firefox.com
 DOMAIN-SUFFIX,gh-proxy.com
+DOMAIN-SUFFIX,home-assistant.io
 DOMAIN-SUFFIX,linux.do
 DOMAIN-SUFFIX,lmstudio.ai
 DOMAIN-SUFFIX,mozilla.com
